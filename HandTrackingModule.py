@@ -67,21 +67,18 @@ class handDetector():
         return self.lmList, bbox
 
     def fingersUp(self):
-        fingers = []
+        fingers = [0, 0, 0, 0, 0]  # Initialize with five zeros for five fingers
 
         if len(self.lmList) >= max(self.tipIds) + 1:  # Check if lmList has enough elements
         # Thumb
             if self.lmList[self.tipIds[0]][1] > self.lmList[self.tipIds[0] - 1][1]:
-                fingers.append(1)
-            else:
-                fingers.append(0)
+                fingers[0] = 1
 
         # Fingers
             for id in range(1, 5):
                 if self.tipIds[id] < len(self.lmList) and self.lmList[self.tipIds[id]][2] < self.lmList[self.tipIds[id] - 2][2]:
-                    fingers.append(1)
-                else:
-                    fingers.append(0)
+                    fingers[id] = 1
+
         else:
             print("Not enough landmarks in lmList. Cannot determine finger positions.")
 
@@ -89,10 +86,11 @@ class handDetector():
 
 
 
+
     def findDistance(self, p1, p2, img, draw=True,r=15, t=3):
         x1, y1 = self.lmList[p1][1:]
         x2, y2 = self.lmList[p2][1:]
-        cx, cy = (x1 + x2) // 2, (y1 + y2) // 2
+        cx, cy = (x1 + x2) // 2, (y1 + y2) // 2https://github.com/MinZawHtay/Moving-Mouse-With-Finger/blob/main/HandTrackingModule.py
 
         if draw:
             cv2.line(img, (x1, y1), (x2, y2), (255, 0, 255), t)
